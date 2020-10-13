@@ -1,0 +1,121 @@
+Option Explicit
+Public Sub CreateFromTemplate()
+'Duplicate the template
+'For as many times as accounts selected
+'Re-name the sheets with the Short names of the accounts - choose the name
+
+On Error GoTo ErrorHandler
+
+
+    Dim n As Integer
+        
+    ' Number of Selected Accounts (True)
+    n = Application.WorksheetFunction.CountIf(ShtVlookUp.Range("ListFinMeasureSelected"), True)
+'    n = 2
+    
+    For n = 1 To n
+                'Marsh (Internal View)
+        If ShtControls.Range("Geography").Value = "Marsh (Internal View)" Then
+                TemplateMarshView.Visible = True
+                TemplateMarshView.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateMarshView.Visible = False
+                
+                'United States Total
+            ElseIf ShtControls.Range("Geography").Value = "United States Total" Then
+                TemplateUSA.Visible = True
+                TemplateUSA.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateUSA.Visible = False
+                
+                'Canada
+            ElseIf ShtControls.Range("Geography").Value = "Canada" Then
+                TemplateCanada.Visible = True
+                TemplateCanada.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateCanada.Visible = False
+                
+                'Victor & ISG
+            ElseIf ShtControls.Range("Geography").Value = "Victor & ISG" Then
+                TemplateVictor.Visible = True
+                TemplateVictor.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateVictor.Visible = False
+                
+                'United Kingdom
+            ElseIf ShtControls.Range("Geography").Value = "United Kingdom" Then
+                TemplateUK.Visible = True
+                TemplateUK.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateUK.Visible = False
+                
+                'Continental Europe
+            ElseIf ShtControls.Range("Geography").Value = "Continental Europe" Then
+                TemplateCE.Visible = True
+                TemplateCE.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateCE.Visible = False
+                
+                'Middle East & Africa
+            ElseIf ShtControls.Range("Geography").Value = "Middle East & Africa" Then
+                TemplateMEA.Visible = True
+                TemplateMEA.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateMEA.Visible = False
+                
+                'Intl -Asia
+            ElseIf ShtControls.Range("Geography").Value = "Intl - Asia" Then
+                TemplateIntAsia.Visible = True
+                TemplateIntAsia.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateIntAsia.Visible = False
+                
+                'Pacific Region
+            ElseIf ShtControls.Range("Geography").Value = "Pacific Region" Then
+                TemplatePAC.Visible = True
+                TemplatePAC.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplatePAC.Visible = False
+                
+                'Latin America
+            ElseIf ShtControls.Range("Geography").Value = "Latin America" Then
+                TemplateLAC.Visible = True
+                TemplateLAC.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateLAC.Visible = False
+                
+                'Home Office & Other
+            Else: ShtControls.Range("Geography").Value = "Home Office & Other"
+                TemplateHO.Visible = True
+                TemplateHO.Copy After:=ActiveWorkbook.Sheets(Worksheets.Count)
+                TemplateHO.Visible = False
+        End If
+    
+    Next
+
+Done:
+        Exit Sub
+ErrorHandler:
+        MsgBox Err.Description & ("Error in Module: modTemplate" & vbCrLf & "Subroutine: CreateFromTemplate")
+End Sub
+Public Sub RenameSheets()
+
+On Error GoTo ErrorHandler
+
+Dim i As Integer
+Dim Sheet As Variant
+
+    i = 2
+    For Each Sheet In Sheets
+        If Sheet.CodeName <> "ShtInstructions" And Sheet.CodeName <> "ShtControls" And Sheet.CodeName <> "ShtFormlogin" _
+                And Sheet.CodeName <> "ShtVlookUp" And Sheet.CodeName <> "ShtRefControls" And Sheet.CodeName <> "ShtEPM" _
+                And Sheet.CodeName <> "TemplateMarshView" And Sheet.CodeName <> "TemplateUSA" And Sheet.CodeName <> "TemplateCanada" _
+                And Sheet.CodeName <> "TemplateUK" And Sheet.CodeName <> "TemplateCE" And Sheet.CodeName <> "TemplateMEA" _
+                And Sheet.CodeName <> "TemplateIntAsia" And Sheet.CodeName <> "TemplatePAC" And Sheet.CodeName <> "TemplateLAC" _
+                And Sheet.CodeName <> "TemplateHO" And Sheet.CodeName <> "TemplateVictor" And Sheet.CodeName <> "ShtCover" Then
+            If ShtVlookUp.Cells(i, 35) <> "" Then
+                Sheet.Range("B8") = ShtVlookUp.Cells(i, 34).Value
+                'Sheet.Range("B5") = ShtVlookUp.Cells(i, 35).Value
+                Sheet.Name = ShtVlookUp.Cells(i, 36).Value
+                i = i + 1
+            End If
+        
+        End If
+    
+    Next Sheet
+
+Done:
+        Exit Sub
+ErrorHandler:
+        MsgBox Err.Description & ("Error in Module: modTemplate" & vbCrLf & "Subroutine: RenameSheets")
+End Sub
